@@ -94,7 +94,13 @@
       }
 
       function initializeSynth() {
+        // a maj 7
         synth.chord = [440, 550, 733.3333333333333];
+
+        // go down an octave
+        for (var i = synth.chord.length - 1; i >- 0; i--) {
+          synth.chord[i] = synth.chord[i] / 2;
+        };
 
         synth.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         synth.gainNode = synth.audioCtx.createGain();
