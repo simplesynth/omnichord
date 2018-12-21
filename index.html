@@ -86,7 +86,7 @@
       });
 
       function strumChord(inversion) {
-        newChord = invertChord(synth.a_maj, parseInt(inversion));
+        newChord = invertChord(synth.chord, parseInt(inversion));
 
         for (var i = synth.oscillators.length - 1; i >= 0; i--) {
           synth.oscillators[i].frequency.value = newChord[i];
@@ -94,20 +94,20 @@
       }
 
       function initializeSynth() {
-        synth.a_maj = [440, 550, 733.3333333333333];
+        synth.chord = [440, 550, 733.3333333333333];
 
         synth.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         synth.gainNode = synth.audioCtx.createGain();
         // create 3 oscillators
-        synth.oscillators = [synth.audioCtx.createOscillator(), synth.audioCtx.createOscillator(), synth.audioCtx.createOscillator()];
+        synth.oscillators = [];
         synth.gainNode.connect(synth.audioCtx.destination);
 
-        for (var i = synth.oscillators.length - 1; i >= 0; i--) {
-          oscillator = synth.oscillators[i];
-
-          oscillator.frequency.value = synth.a_maj[i];
+        for (var i = synth.chord.length - 1; i >= 0; i--) {
+          oscillator = synth.audioCtx.createOscillator();
+          oscillator.frequency.value = synth.chord[i];
           oscillator.connect(synth.gainNode);
           oscillator.start();
+          synth.oscillators.push(oscillator);
         }
       }
     </script>
