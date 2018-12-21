@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OMNICHORD</title>
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./assets/stylesheets/main.css">
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/javascripts/omnichord.js"></script>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <br><br><br><br>
+      <div class="row">
+        <div class="col-xs-12">
+          <a id="start-button" class="btn btn-primary">START</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+
+        </div>
+
+        <div class="col-md-6">
+          <div class="strummer" style="height: 40px; width: 100%; margin-bottom: 30px; background-color: black;" data-inversion="0"></div>
+
+          <div class="strummer" style="height: 40px; width: 100%; margin-bottom: 30px; background-color: black;" data-inversion="1"></div>
+
+          <div class="strummer" style="height: 40px; width: 100%; margin-bottom: 30px; background-color: black;" data-inversion="2"></div>
+
+          <div class="strummer" style="height: 40px; width: 100%; margin-bottom: 30px; background-color: black;" data-inversion="3"></div>
+
+          <div class="strummer" style="height: 40px; width: 100%; margin-bottom: 30px; background-color: black;" data-inversion="4"></div>
+
+          <div class="strummer" style="height: 40px; width: 100%; margin-bottom: 30px; background-color: black;" data-inversion="5"></div>
+
+          <div class="strummer" style="height: 40px; width: 100%; margin-bottom: 30px; background-color: black;" data-inversion="6"></div>
+
+          <div class="strummer" style="height: 40px; width: 100%; margin-bottom: 30px; background-color: black;" data-inversion="7"></div>
+
+          <div class="strummer" style="height: 40px; width: 100%; margin-bottom: 30px; background-color: black;" data-inversion="8"></div>
+
+          <div class="strummer" style="height: 40px; width: 100%; margin-bottom: 30px; background-color: black;" data-inversion="9"></div>
+
+          <div class="strummer" style="height: 40px; width: 100%; margin-bottom: 30px; background-color: black;" data-inversion="10"></div>
+
+          <div class="strummer" style="height: 40px; width: 100%; margin-bottom: 30px; background-color: black;" data-inversion="11"></div>
+
+          <div class="strummer" style="height: 40px; width: 100%; margin-bottom: 30px; background-color: black;" data-inversion="12"></div>
+
+          <div class="strummer" style="height: 40px; width: 100%; margin-bottom: 30px; background-color: black;" data-inversion="13"></div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+    <script type="text/javascript">
+      var synth = {};
+
+      $(document).ready(function() {
+
+
+        $('#start-button').on('click', function() {
+          if (typeof synth.audioCtx === 'undefined') {
+            console.log('undefined audioCtx');
+
+            initializeSynth();
+          }
+        })
+
+        $('.strummer').on('mouseover', function() {
+          if (typeof synth.oscillators !== 'undefined') {
+            strumChord($(this).data('inversion'));
+          }
+        })
+
+      });
+
+      function strumChord(inversion) {
+        newChord = invertChord(synth.a_maj, parseInt(inversion));
+
+        for (var i = synth.oscillators.length - 1; i >= 0; i--) {
+          synth.oscillators[i].frequency.value = newChord[i];
+        }
+      }
+
+      function initializeSynth() {
+        synth.a_maj = [440, 550, 733.3333333333333];
+
+        synth.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        synth.gainNode = synth.audioCtx.createGain();
+        // create 3 oscillators
+        synth.oscillators = [synth.audioCtx.createOscillator(), synth.audioCtx.createOscillator(), synth.audioCtx.createOscillator()];
+        synth.gainNode.connect(synth.audioCtx.destination);
+
+        for (var i = synth.oscillators.length - 1; i >= 0; i--) {
+          oscillator = synth.oscillators[i];
+
+          oscillator.frequency.value = synth.a_maj[i];
+          oscillator.connect(synth.gainNode);
+          oscillator.start();
+        }
+      }
+    </script>
+  </body>
+</html>
