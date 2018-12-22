@@ -22,9 +22,37 @@
           <a id="start-button" class="btn btn-primary">START</a>
         </div>
       </div>
+      <br><br><br><br>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-3 buttons-column" id="root-note-column">
+          <div class="row">
+            <div class="col-md-4"><a class="btn btn-note">C</a></div>
+            <div class="col-md-4"><a class="btn btn-note">C#</a></div>
+            <div class="col-md-4"><a class="btn btn-note">D</a></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><a class="btn btn-note">D#</a></div>
+            <div class="col-md-4"><a class="btn btn-note">E</a></div>
+            <div class="col-md-4"><a class="btn btn-note">F</a></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><a class="btn btn-note">F#</a></div>
+            <div class="col-md-4"><a class="btn btn-note">G</a></div>
+            <div class="col-md-4"><a class="btn btn-note">G#</a></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"><a class="btn btn-note">A</a></div>
+            <div class="col-md-4"><a class="btn btn-note">A#</a></div>
+            <div class="col-md-4"><a class="btn btn-note">B</a></div>
+          </div>
+        </div>
 
+        <div class="col-md-3 buttons-column" id="chord-type-column">
+          <div class="row">
+            <div class="col-md-4"><a class="btn btn-note">MAJ</a></div>
+            <div class="col-md-4"><a class="btn btn-note">MIN</a></div>
+            <div class="col-md-4"><a class="btn btn-note">DIM</a></div>
+          </div>
         </div>
 
         <div class="col-md-6">
@@ -67,6 +95,11 @@
       var synth = {};
 
       $(document).ready(function() {
+
+        $('.btn-note').on('click', function() {
+          $('#root-note-column').find('.btn-note').removeClass('selected');
+          $(this).addClass('selected');
+        });
 
 
         $('#start-button').on('click', function() {

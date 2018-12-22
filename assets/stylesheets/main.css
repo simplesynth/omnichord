@@ -1,1 +1,4 @@
-.strum-bar            { height: 15px; width: 100%; margin-bottom: 15px; background-color: black; }
+.btn-note                   { background-color: transparent; color: #000; width: 100%; border: 1px solid #000; }
+.btn-note.selected          { background-color: #000; color: #FFF; }
+.buttons-column .row        { margin-bottom: 30px; }
+.strum-bar                  { height: 15px; width: 100%; margin-bottom: 15px; background-color: black; }
