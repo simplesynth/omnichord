@@ -17,41 +17,36 @@
   <body>
     <div class="container-fluid">
       <br><br><br><br>
-      <div class="row">
-        <div class="col-xs-12">
-          <a id="start-button" class="btn btn-primary">START</a>
-        </div>
-      </div>
-      <br><br><br><br>
+
       <div class="row">
         <div class="col-md-3 buttons-column" id="root-note-column">
           <div class="row">
-            <div class="col-md-4"><a class="btn btn-note">C</a></div>
-            <div class="col-md-4"><a class="btn btn-note">C#</a></div>
-            <div class="col-md-4"><a class="btn btn-note">D</a></div>
+            <div class="col-md-4"><a class="btn btn-note root-note-js" data-root-note="275.0">C</a></div>
+            <div class="col-md-4"><a class="btn btn-note root-note-js" data-root-note="293.3333333333333">C#</a></div>
+            <div class="col-md-4"><a class="btn btn-note root-note-js" data-root-note="311.66666666666663">D</a></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><a class="btn btn-note">D#</a></div>
-            <div class="col-md-4"><a class="btn btn-note">E</a></div>
-            <div class="col-md-4"><a class="btn btn-note">F</a></div>
+            <div class="col-md-4"><a class="btn btn-note root-note-js" data-root-note="330.0">D#</a></div>
+            <div class="col-md-4"><a class="btn btn-note root-note-js" data-root-note="348.3333333333333">E</a></div>
+            <div class="col-md-4"><a class="btn btn-note root-note-js" data-root-note="366.66666666666663">F</a></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><a class="btn btn-note">F#</a></div>
-            <div class="col-md-4"><a class="btn btn-note">G</a></div>
-            <div class="col-md-4"><a class="btn btn-note">G#</a></div>
+            <div class="col-md-4"><a class="btn btn-note root-note-js" data-root-note="385.0">F#</a></div>
+            <div class="col-md-4"><a class="btn btn-note root-note-js" data-root-note="403.3333333333333">G</a></div>
+            <div class="col-md-4"><a class="btn btn-note root-note-js" data-root-note="421.66666666666663">G#</a></div>
           </div>
           <div class="row">
-            <div class="col-md-4"><a class="btn btn-note">A</a></div>
-            <div class="col-md-4"><a class="btn btn-note">A#</a></div>
-            <div class="col-md-4"><a class="btn btn-note">B</a></div>
+            <div class="col-md-4"><a class="btn btn-note root-note-js" data-root-note="440.0">A</a></div>
+            <div class="col-md-4"><a class="btn btn-note root-note-js" data-root-note="476.6666666666667">A#</a></div>
+            <div class="col-md-4"><a class="btn btn-note root-note-js" data-root-note="513.3333333333334">B</a></div>
           </div>
         </div>
 
         <div class="col-md-3 buttons-column" id="chord-type-column">
           <div class="row">
-            <div class="col-md-4"><a class="btn btn-note">MAJ</a></div>
-            <div class="col-md-4"><a class="btn btn-note">MIN</a></div>
-            <div class="col-md-4"><a class="btn btn-note">DIM</a></div>
+            <div class="col-md-4"><a class="btn btn-note chord-type-js selected">MAJ</a></div>
+            <div class="col-md-4"><a class="btn btn-note chord-type-js">MIN</a></div>
+            <div class="col-md-4"><a class="btn btn-note chord-type-js">DIM</a></div>
           </div>
         </div>
 
@@ -96,19 +91,20 @@
 
       $(document).ready(function() {
 
-        $('.btn-note').on('click', function() {
-          $('#root-note-column').find('.btn-note').removeClass('selected');
+        $('.root-note-js').on('click', function() {
+          $('.root-note-js').removeClass('selected');
           $(this).addClass('selected');
+
+          synth.chord = majorTriad(parseInt($(this).data('root-note')));
+
+          if (typeof synth.audioCtx === 'undefined') { initializeSynth(); }
+
         });
 
-
-        $('#start-button').on('click', function() {
-          if (typeof synth.audioCtx === 'undefined') {
-            console.log('undefined audioCtx');
-
-            initializeSynth();
-          }
-        })
+        $('.chord-type-js').on('click', function() {
+          $('.chord-type-js').removeClass('selected');
+          $(this).addClass('selected');
+        });
 
         $('.strum-bar').on('mouseover', function() {
           if (typeof synth.oscillators !== 'undefined') {
@@ -128,7 +124,7 @@
 
       function initializeSynth() {
         // a maj 7
-        synth.chord = [440, 550, 733.3333333333333];
+        synth.chord = [440, 586.666666667, 696.6666666666666];
 
         // go down an octave
         for (var i = synth.chord.length - 1; i >- 0; i--) {
