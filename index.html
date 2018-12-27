@@ -44,9 +44,9 @@
 
         <div class="col-md-3 buttons-column" id="chord-type-column">
           <div class="row">
-            <div class="col-md-4"><a class="btn btn-note chord-type-js selected">MAJ</a></div>
-            <div class="col-md-4"><a class="btn btn-note chord-type-js">MIN</a></div>
-            <div class="col-md-4"><a class="btn btn-note chord-type-js">DIM</a></div>
+            <div class="col-md-4"><a class="btn btn-note chord-type-js selected" data-chord-type="major">MAJ</a></div>
+            <div class="col-md-4"><a class="btn btn-note chord-type-js" data-chord-type="minor">MIN</a></div>
+            <div class="col-md-4"><a class="btn btn-note chord-type-js" data-chord-type="diminished">DIM</a></div>
           </div>
         </div>
 
@@ -109,13 +109,20 @@
         $('.strum-bar').on('mouseover', function() {
           if (typeof synth.oscillators !== 'undefined') {
             strumChord($(this).data('inversion'));
+            synth.gainNode.gain.value = 1;
+          }
+        })
+
+        $('.strum-bar').on('mouseleave', function() {
+          if (typeof synth.oscillators !== 'undefined') {
+            synth.gainNode.gain.value = 0;
           }
         })
 
       });
 
       function strumChord(inversion) {
-        newChord = invertChord(synth.chord, parseInt(inversion));
+        newChord = invertChord(synth.root, synth.chordType, parseInt(inversion));
 
         for (var i = synth.oscillators.length - 1; i >= 0; i--) {
           synth.oscillators[i].frequency.value = newChord[i];
@@ -124,20 +131,17 @@
 
       function initializeSynth() {
         // a maj 7
-        synth.chord = [440, 586.666666667, 696.6666666666666];
-
-        // go down an octave
-        for (var i = synth.chord.length - 1; i >- 0; i--) {
-          synth.chord[i] = synth.chord[i] / 2;
-        };
+        synth.root = majorTriad(440);
+        synth.chordType = $('.chord-type-js.selected').data('chord-type');
 
         synth.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         synth.gainNode = synth.audioCtx.createGain();
         // create 3 oscillators
         synth.oscillators = [];
         synth.gainNode.connect(synth.audioCtx.destination);
+        synth.gainNode.gain.value = 0;
 
-        for (var i = synth.chord.length - 1; i >= 0; i--) {
+        for (var i = triad(synth.root, synth.chordType).length - 1; i >= 0; i--) {
           oscillator = synth.audioCtx.createOscillator();
           oscillator.frequency.value = synth.chord[i];
           oscillator.connect(synth.gainNode);
