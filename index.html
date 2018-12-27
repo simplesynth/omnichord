@@ -95,7 +95,7 @@
           $('.root-note-js').removeClass('selected');
           $(this).addClass('selected');
 
-          synth.chord = majorTriad(parseInt($(this).data('root-note')));
+          synth.root = parseFloat($(this).data('root-note'));
 
           if (typeof synth.audioCtx === 'undefined') { initializeSynth(); }
 
@@ -143,7 +143,7 @@
 
         for (var i = triad(synth.root, synth.chordType).length - 1; i >= 0; i--) {
           oscillator = synth.audioCtx.createOscillator();
-          oscillator.frequency.value = synth.chord[i];
+          oscillator.frequency.value = triad(parseFloat(synth.root), synth.chordType)[i];
           oscillator.connect(synth.gainNode);
           oscillator.start();
           synth.oscillators.push(oscillator);
