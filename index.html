@@ -104,6 +104,7 @@
         $('.chord-type-js').on('click', function() {
           $('.chord-type-js').removeClass('selected');
           $(this).addClass('selected');
+          synth.chordType = $(this).data('chord-type');
         });
 
         $('.strum-bar').on('mouseover', function() {
