@@ -12,6 +12,7 @@ function invertChord(rootNoteFreq, chordType, count) {
 }
 
 function triad(rootNoteFreq, chordType) {
+  rootNoteFreq = parseFloat(rootNoteFreq / 2);
   if (chordType === 'major') { return majorTriad(rootNoteFreq); }
   else if (chordType === 'minor') { return minorTriad(rootNoteFreq); }
   else if (chordType === 'diminished') { return diminishedTriad(rootNoteFreq); }
