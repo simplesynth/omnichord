@@ -110,13 +110,15 @@
         $('.strum-bar').on('mouseover', function() {
           if (typeof synth.oscillators !== 'undefined') {
             strumChord($(this).data('inversion'));
-            synth.gainNode.gain.value = 1;
+            synth.gainNode.gain.cancelScheduledValues(synth.audioCtx.currentTime);
+            synth.gainNode.gain.linearRampToValueAtTime(1, synth.audioCtx.currentTime + .05)
           }
         })
 
         $('.strum-bar').on('mouseleave', function() {
           if (typeof synth.oscillators !== 'undefined') {
-            synth.gainNode.gain.value = 0;
+            synth.gainNode.gain.cancelScheduledValues(synth.audioCtx.currentTime);
+            synth.gainNode.gain.linearRampToValueAtTime(0, synth.audioCtx.currentTime + 1)
           }
         })
 
