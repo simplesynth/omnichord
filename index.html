@@ -121,37 +121,8 @@
             synth.gainNode.gain.linearRampToValueAtTime(0, synth.audioCtx.currentTime + 1)
           }
         })
-
       });
 
-      function strumChord(inversion) {
-        newChord = invertChord(synth.root, synth.chordType, parseInt(inversion));
-
-        for (var i = synth.oscillators.length - 1; i >= 0; i--) {
-          synth.oscillators[i].frequency.value = newChord[i];
-        }
-      }
-
-      function initializeSynth() {
-        // a maj 7
-        synth.root = majorTriad(440);
-        synth.chordType = $('.chord-type-js.selected').data('chord-type');
-
-        synth.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        synth.gainNode = synth.audioCtx.createGain();
-        // create 3 oscillators
-        synth.oscillators = [];
-        synth.gainNode.connect(synth.audioCtx.destination);
-        synth.gainNode.gain.value = 0;
-
-        for (var i = triad(synth.root, synth.chordType).length - 1; i >= 0; i--) {
-          oscillator = synth.audioCtx.createOscillator();
-          oscillator.frequency.value = triad(parseFloat(synth.root), synth.chordType)[i];
-          oscillator.connect(synth.gainNode);
-          oscillator.start();
-          synth.oscillators.push(oscillator);
-        }
-      }
     </script>
   </body>
 </html>
